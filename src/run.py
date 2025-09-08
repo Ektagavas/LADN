@@ -54,7 +54,7 @@ def main():
         ep0, total_it = model.resume(opts.resume)
 
     print('Setting scheduler')
-    model.set_scheduler(opts, last_ep=ep0)
+    # model.set_scheduler(opts, last_ep=ep0)
     ep0 += 1
     print('start the training at epoch %d'%(ep0))
 
