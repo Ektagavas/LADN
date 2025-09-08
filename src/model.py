@@ -827,8 +827,10 @@ class LADN(nn.Module):
 
 
     def resume(self, model_dir, train=True):
-        checkpoint = torch.load(model_dir, map_location=self.device)
-        checkpoint_backup = torch.load(model_dir, map_location=self.backup_device)
+        # checkpoint = torch.load(model_dir, map_location=self.device)
+        checkpoint_backup = torch.load(model_dir, map_location=self.device)
+        print('checkpoint loaded')
+        checkpoint = checkpoint_backup
 
         # weight
         if train:
@@ -848,30 +850,39 @@ class LADN(nn.Module):
                         continue
                     getattr(self, 'dis'+local_part.capitalize()).load_state_dict(checkpoint_backup['dis'+local_part.capitalize()])
 
+        
+        print('Part 1 model loaded')
         self.enc_c.load_state_dict(checkpoint_backup['enc_c'])
         self.enc_a.load_state_dict(checkpoint_backup['enc_a'])
-        self.gen.load_state_dict(checkpoint['gen'])
+        # self.gen.load_state_dict(checkpoint['gen'])
+        self.gen.load_state_dict(checkpoint_backup['gen'])
+
+        print('Opt loading')
         
         # optimizer
-        if train:
-            self.disA_opt.load_state_dict(checkpoint_backup['disA_opt'])
-            self.disA2_opt.load_state_dict(checkpoint_backup['disA2_opt'])
-            self.disB_opt.load_state_dict(checkpoint_backup['disB_opt'])
-            self.disB2_opt.load_state_dict(checkpoint_backup['disB2_opt'])
-            self.disContent_opt.load_state_dict(checkpoint_backup['disContent_opt'])
-            self.enc_c_opt.load_state_dict(checkpoint_backup['enc_c_opt'])
-            self.enc_a_opt.load_state_dict(checkpoint_backup['enc_a_opt'])
-            self.gen_opt.load_state_dict(checkpoint['gen_opt'])
+        # if train:
+            # self.disA_opt.load_state_dict(checkpoint_backup['disA_opt'])
+            # self.disA2_opt.load_state_dict(checkpoint_backup['disA2_opt'])
+            # self.disB_opt.load_state_dict(checkpoint_backup['disB_opt'])
+            # self.disB2_opt.load_state_dict(checkpoint_backup['disB2_opt'])
+            # self.disContent_opt.load_state_dict(checkpoint_backup['disContent_opt'])
+            # self.enc_c_opt.load_state_dict(checkpoint_backup['enc_c_opt'])
+            # self.enc_a_opt.load_state_dict(checkpoint_backup['enc_a_opt'])
+            # # self.gen_opt.load_state_dict(checkpoint['gen_opt'])
+            # self.gen_opt.load_state_dict(checkpoint_backup['gen_opt'])
             
-            if self.style_dis:
-                self.disStyle_opt.load_state_dict(checkpoint_backup['disStyle_opt'])
+            # if self.style_dis:
+            #     self.disStyle_opt.load_state_dict(checkpoint_backup['disStyle_opt'])
             
-            if self.local_style_dis:
-                for i in range(self.n_local):
-                    local_part = self.local_parts[i]
-                    if '_' in local_part:
-                        continue
-                    getattr(self, 'dis'+local_part.capitalize()+'_opt').load_state_dict(checkpoint_backup['dis'+local_part.capitalize()+'_opt'])
+            # if self.local_style_dis:
+            #     for i in range(self.n_local):
+            #         local_part = self.local_parts[i]
+            #         if '_' in local_part:
+            #             continue
+            #         getattr(self, 'dis'+local_part.capitalize()+'_opt').load_state_dict(checkpoint_backup['dis'+local_part.capitalize()+'_opt'])
+        
+        print('Opt loaded')
+
         checkpoint_ep = checkpoint['ep']
         checkpoint_total_it = checkpoint['total_it']
         del checkpoint
