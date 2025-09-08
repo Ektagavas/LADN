@@ -46,12 +46,14 @@ def main():
     # model
     print('\n--- load model ---')
     model = LADN(opts)
+    print('Model loaded')
     if opts.resume is None:
         ep0 = -1
         total_it = 0
     else:
         ep0, total_it = model.resume(opts.resume)
 
+    print('Setting scheduler')
     model.set_scheduler(opts, last_ep=ep0)
     ep0 += 1
     print('start the training at epoch %d'%(ep0))
