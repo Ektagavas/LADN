@@ -7,7 +7,7 @@ class Options():
 
         # data loader related
         self.parser.add_argument('--dataroot', type=str, required=True, help='path of data')
-        self.parser.add_argument('--landmark_file', type=str, default="/content/datasets/landmark.pk", help='path of the API landmark (to the pickle file)')
+        self.parser.add_argument('--landmark_file', type=str, default="/scratch/eg4131/LADN/makeup/landmark.pk", help='path of the API landmark (to the pickle file)')
         self.parser.add_argument('--phase', type=str, default='train', choices=['train', 'test'], help=' \
             This option set whether the network is running in training mode or in testing mode. \
             if opts.phase == train, train normally. \
