@@ -1,6 +1,6 @@
 import os
 import torchvision
-from tensorboardX import SummaryWriter
+# from tensorboardX import SummaryWriter
 import numpy as np
 from PIL import Image
 
@@ -49,15 +49,15 @@ class Saver():
             os.makedirs(self.test_image_dir)
 
         # create tensorboard writer
-        self.writer = SummaryWriter(log_dir=self.display_dir)
+        # self.writer = SummaryWriter(log_dir=self.display_dir)
 
     # write losses and images to tensorboard
     def write_display(self, total_it, model):
         # write loss
         if (total_it + 1) % self.loss_save_freq == 0:
             members = [attr for attr in dir(model) if not callable(getattr(model, attr)) and not attr.startswith("__") and 'loss' in attr]
-            for m in members:
-                self.writer.add_scalar(m, getattr(model, m), total_it)
+            # for m in members:
+            #     self.writer.add_scalar(m, getattr(model, m), total_it)
 
         # write img
         if (total_it + 1) % self.display_freq == 0:
@@ -67,7 +67,7 @@ class Saver():
             image_dis = image_dis.numpy() * 255
             image_dis = image_dis.astype('uint8')
             # print(type(image_dis), image_dis.shape)
-            self.writer.add_image('Image', image_dis, total_it)
+            # self.writer.add_image('Image', image_dis, total_it)
 
     # save result images
     def write_img(self, ep, model):
